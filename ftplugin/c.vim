@@ -27,7 +27,13 @@ source $VIMRUNTIME/ftplugin/c.vim
 let s:sol = '^\s*'
 let s:eol = '\s*(//.*)?$'
 let s:com = '// ' . repeat("-", 50)
-let s:hdr = '//*****************************************************************************'
+let s:grp = '//*************************************************************************'
+let s:hdr = '//*****************************************************************************\n' .
+          \ '// File        : \<%\>\n' .
+          \ '// Author      : \<$USER\>\n' .
+          \ '// Created     : \d\n' .
+          \ '// Description : \n' .
+          \ '//*****************************************************************************\n\:\n'
 
 let s:autocomplete_matches = [
  \      ['\v\([^)]*'.s:eol                              , '\N\:\n)'                   ],
@@ -35,6 +41,8 @@ let s:autocomplete_matches = [
  \      ['\v\{[^}]*'.s:eol                              , '\N\:\n}'                   ],
  \      ['\vdesc\s+(\w+)\s+(\w+)\s*(.*)$'               , '\!'.s:com.'\n// \1: \2\n// - \3\:\n'.s:com.'\n'              ],
  \      [s:sol.'\v\zs-$'                                , '\!'.s:com                  ],
+ \      ['\v- (.*)'.s:eol                               , '\!// \1 \(repeat("-",61-col("."))\)' ],
+ \      ['\vhead'                                       , '\!'.s:hdr                  ],
  \ ]
 
 if exists('*autocomplete#register') | call autocomplete#register("c", s:autocomplete_matches) | endif
